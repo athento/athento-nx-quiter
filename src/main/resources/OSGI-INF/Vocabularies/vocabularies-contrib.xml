@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component name="org.athento.nuxeo.quiter.vocabularies"
+	version="1.0.0">
+	<require>org.nuxeo.runtime.started</require>
+
+	<extension target="org.nuxeo.ecm.directory.sql.SQLDirectoryFactory"
+		point="directories">
+
+		<directory name="services">
+			<schema>vocabulary</schema>
+			<dataSource>java:/nxsqldirectory</dataSource>
+			<cacheTimeout>3600</cacheTimeout>
+			<cacheMaxSize>1000</cacheMaxSize>
+			<idField>id</idField>
+			<autoincrementIdField>false</autoincrementIdField>
+			<createTablePolicy>always</createTablePolicy>
+			<table>carsales_vocabulary_services</table>
+			<dataFile>data/vocabularies/services.csv</dataFile>
+		</directory>
+
+		<directory name="size">
+			<schema>vocabulary</schema>
+			<dataSource>java:/nxsqldirectory</dataSource>
+			<cacheTimeout>3600</cacheTimeout>
+			<cacheMaxSize>1000</cacheMaxSize>
+			<idField>id</idField>
+			<autoincrementIdField>false</autoincrementIdField>
+			<createTablePolicy>on_missing_columns</createTablePolicy>
+			<table>carsales_vocabulary_size</table>
+			<dataFile>data/vocabularies/size.csv</dataFile>
+		</directory>
+
+	</extension>
+
+	<extension target="org.nuxeo.ecm.directory.ui.DirectoryUIManager"
+		point="directories">
+		
+		<directory name="services" layout="vocabulary" sortField="ordering" />
+		<directory name="size" layout="vocabulary" sortField="ordering" />
+
+	</extension>
+
+</component>
