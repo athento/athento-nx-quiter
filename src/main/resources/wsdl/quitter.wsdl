@@ -3,7 +3,7 @@
         Owner: Quiter Servicios Informaticos S.L. Service: InvoicesIntegration Version: 1.0 Description: Integration of invoices of documentary manager.
     </wsdl:documentation>
     <wsdl:types>
-        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.quiter.com/InvoicesIntegration" targetNamespace="http://www.quiter.com/InvoicesIntegration">
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.quiter.com/InvoicesIntegration" targetNamespace="http://www.quiter.com/InvoicesIntegration" elementFormDefault="qualified">
             <xsd:element name="executeInvoicesIntegration">
                 <xsd:complexType>
                     <xsd:sequence>

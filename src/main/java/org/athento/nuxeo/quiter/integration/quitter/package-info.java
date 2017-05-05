@@ -4,5 +4,7 @@
  *     
  * 
  */
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.quiter.com/InvoicesIntegration", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.quiter.com/InvoicesIntegration", elementFormDefault = XmlNsForm.QUALIFIED)
 package org.athento.nuxeo.quiter.integration.quitter;
+
+import javax.xml.bind.annotation.XmlNsForm;

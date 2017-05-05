@@ -1,7 +1,7 @@
 package org.athento.nuxeo.quiter.api.entity;
 
 /**
- * Renault exception entity.
+ * Quiter exception entity.
  */
 public class QuiterExceptionEntity {
 

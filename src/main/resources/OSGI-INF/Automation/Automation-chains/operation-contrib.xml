@@ -21,9 +21,8 @@
 
     <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent"
                point="operations">
-
         <documentation>
-            Automation contributions for Renault.
+            Automation contributions for Quiter.
             Operations:
             - Save invoice
         </documentation>

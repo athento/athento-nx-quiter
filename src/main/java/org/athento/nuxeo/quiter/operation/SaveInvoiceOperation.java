@@ -100,7 +100,7 @@ public class SaveInvoiceOperation {
         if (LOG.isInfoEnabled()) {
             LOG.info("Running Save Factura operation ...");
         }
-        if ("Invoice".equals(doc.getType())) {
+        if (!"Invoice".equals(doc.getType())) {
             throw new InvoiceException("Document " + doc.getId() + " is not a Invoice doctype");
         }
         MessageType output = null;
