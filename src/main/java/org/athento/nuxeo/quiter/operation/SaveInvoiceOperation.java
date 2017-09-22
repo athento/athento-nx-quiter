@@ -26,6 +26,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -208,6 +209,7 @@ public class SaveInvoiceOperation {
         invoiceType.setPaymentMethodInfo(paymentType);
         // Add Invoice number
         invoiceType.setInvoiceNumber("1234");
+        invoiceType.setTotalAmount("10000");
         invoicesType.getInvoice().add(invoiceType);
         return invoicesType;
     }
@@ -224,10 +226,11 @@ public class SaveInvoiceOperation {
         InvoicesType invoicesType = new InvoicesType();
         InvoiceType invoiceType = new InvoiceType();
         invoiceType.setInvoiceID(doc.getId());
-        invoiceType.setCompany((String) doc.getPropertyValue("S_FACTURA:company"));
+        invoiceType.setCompany((String) doc.getPropertyValue("S_FACTURA:companyid"));
         invoiceType.setDepartment((String) doc.getPropertyValue("S_FACTURA:department"));
         invoiceType.setNif((String) doc.getPropertyValue("S_FACTURA:provider"));
         invoiceType.setPostingDate(QuiterUtils.formatDate(Calendar.getInstance().getTime(), "yyyy-MM-dd"));
+        invoiceType.setInvoiceDate(new java.text.SimpleDateFormat("yyyy-MM-dd").format(((Calendar) doc.getPropertyValue("S_FACTURA:date")).getTime()));
         invoiceType.setOffice("");
         invoiceType.setBrand("");
         // Add details
@@ -278,6 +281,13 @@ public class SaveInvoiceOperation {
         invoiceType.setPaymentMethodInfo(paymentType);
         // Add Invoice number
         invoiceType.setInvoiceNumber((String) doc.getPropertyValue("S_FACTURA:number"));
+        // Add Total Amount
+        Double DtotalAmount = (Double) doc.getPropertyValue("S_FACTURA:totalAmount");
+        if (DtotalAmount == null) {
+            DtotalAmount=0.0;
+        }
+        invoiceType.setTotalAmount(String.format("%.2f",DtotalAmount).replace(".",""));
+        // Add Invoice Type
         invoicesType.getInvoice().add(invoiceType);
         return invoicesType;
     }

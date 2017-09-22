@@ -40,6 +40,7 @@
                     <xsd:element name="taxes" type="TaxesType"/>
                     <xsd:element name="paymentMethodInfo" type="PaymentMethodType"/>
                     <xsd:element name="invoiceNumber" type="xsd:string"/>
+                    <xsd:element name="totalAmount" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:complexType name="DetailsType">
