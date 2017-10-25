@@ -26,6 +26,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -208,6 +209,7 @@ public class SaveInvoiceOperation {
         invoiceType.setPaymentMethodInfo(paymentType);
         // Add Invoice number
         invoiceType.setInvoiceNumber("1234");
+        invoiceType.setTotalAmount("10000");
         invoicesType.getInvoice().add(invoiceType);
         return invoicesType;
     }
@@ -224,32 +226,45 @@ public class SaveInvoiceOperation {
         InvoicesType invoicesType = new InvoicesType();
         InvoiceType invoiceType = new InvoiceType();
         invoiceType.setInvoiceID(doc.getId());
-        invoiceType.setCompany((String) doc.getPropertyValue("S_FACTURA:company"));
-        invoiceType.setDepartment((String) doc.getPropertyValue("projectFile:category"));
+        invoiceType.setCompany((String) doc.getPropertyValue("S_FACTURA:companyid"));
+        invoiceType.setDepartment((String) doc.getPropertyValue("S_FACTURA:department"));
         invoiceType.setNif((String) doc.getPropertyValue("S_FACTURA:provider"));
         invoiceType.setPostingDate(QuiterUtils.formatDate(Calendar.getInstance().getTime(), "yyyy-MM-dd"));
+        invoiceType.setInvoiceDate(new java.text.SimpleDateFormat("yyyy-MM-dd").format(((Calendar) doc.getPropertyValue("S_FACTURA:date")).getTime()));
         invoiceType.setOffice("");
         invoiceType.setBrand("");
         // Add details
         DetailsType detailsType = new DetailsType();
-        List<Map<String, String>> details = (List) doc.getPropertyValue("S_FACTURA:subjectLine");
-        for (Map<String, String> detail : details) {
+        List<Map<String, Object>> details = (List) doc.getPropertyValue("S_FACTURA:subjectLine");
+        for (Map<String, Object> detail : details) {
             DetailType detailType = new DetailType();
-            detailType.setConcept(detail.get("subjectLineSubject"));
-            detailType.setAmountWithoutVAT(detail.get("subjectLineAmount"));
-            detailType.setExpenseAccount(detail.get("subjectLineAccount"));
+            detailType.setConcept((String) detail.get("subjectLineSubject"));
+            Double amount = (Double) detail.get("subjectLineAmount");
+            if (amount == null) {
+                amount=0.0;
+            }
+            detailType.setAmountWithoutVAT(String.format("%.2f",amount).replace(".",""));
+            detailType.setExpenseAccount((String) detail.get("subjectLineAccount"));
             detailsType.getDetail().add(detailType);
         }
         invoiceType.setDetails(detailsType);
         // Add taxes
         TaxesType taxesType = new TaxesType();
-        List<Map<String, String>> taxes = (List) doc.getPropertyValue("S_FACTURA:taxesLine");
-        for (Map<String, String> tax : taxes) {
+        List<Map<String, Object>> taxes = (List) doc.getPropertyValue("S_FACTURA:taxesLine");
+        for (Map<String, Object> tax : taxes) {
             TaxType taxType = new TaxType();
-            taxType.setType(tax.get("type_"));
-            taxType.setTaxBase(tax.get("taxBase"));
-            taxType.setPercentage(tax.get("percentage"));
-            taxType.setTotalInvoice(tax.get("totalInvoice"));
+            taxType.setType((String) tax.get("type_"));
+            Double base = (Double) tax.get("taxBase");
+            if (base == null) {
+                base=0.0;
+            }
+            taxType.setTaxBase(String.format("%.2f",base).replace(".",""));
+            taxType.setPercentage((String) tax.get("percentage"));
+            Double total = (Double) tax.get("totalInvoice");
+            if (total == null) {
+                total=0.0;
+            }
+            taxType.setTotalInvoice(String.format("%.2f",total).replace(".",""));
             taxesType.getTax().add(taxType);
         }
         invoiceType.setTaxes(taxesType);
@@ -266,6 +281,13 @@ public class SaveInvoiceOperation {
         invoiceType.setPaymentMethodInfo(paymentType);
         // Add Invoice number
         invoiceType.setInvoiceNumber((String) doc.getPropertyValue("S_FACTURA:number"));
+        // Add Total Amount
+        Double DtotalAmount = (Double) doc.getPropertyValue("S_FACTURA:totalAmount");
+        if (DtotalAmount == null) {
+            DtotalAmount=0.0;
+        }
+        invoiceType.setTotalAmount(String.format("%.2f",DtotalAmount).replace(".",""));
+        // Add Invoice Type
         invoicesType.getInvoice().add(invoiceType);
         return invoicesType;
     }

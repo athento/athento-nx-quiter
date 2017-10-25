@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.athento.nuxeo.quiter</groupId>
     <artifactId>athento-nx-quiter</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <description>
         This module is an Quiter integration for Athento.
     </description>
@@ -308,6 +308,99 @@
         </dependency>
     </dependencies>
 
+
+    <profiles>
+        <profile>
+            <id>test</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <timestamp>${maven.build.timestamp}</timestamp>
+                <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-jar-plugin</artifactId>
+                            <version>2.3.1</version>
+                            <configuration>
+                                <finalName>${project.artifactId}-${project.version}-${maven.build.timestamp}</finalName>
+                                <archive>
+                                    <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                                    <manifestEntries>
+                                        <Bundle-Version>${project.version}-t${buildNumber}</Bundle-Version>
+                                        <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
+                                    </manifestEntries>
+                                </archive>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>pro</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>pro</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.athento.nuxeo.plugin</groupId>
+                        <artifactId>athento-nx-single-addon</artifactId>
+                        <version>1.0</version>
+                        <configuration>
+                            <name>${project.artifactId}</name>
+                            <version>${project.version}</version>
+                            <properties>
+                                <url>http://www.athento.com</url>
+                                <title>${project.name}</title>
+                                <description>${project.description}</description>
+                                <platform>cap-6.0</platform>
+                            </properties>
+                            <outputDir>addon</outputDir>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>addon-generation</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-jar-plugin</artifactId>
+                            <version>2.3.1</version>
+                            <configuration>
+                                <archive>
+                                    <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                                    <manifestEntries>
+                                        <Bundle-Version>${project.version}-t${buildNumber}</Bundle-Version>
+                                        <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
+                                    </manifestEntries>
+                                </archive>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+
+        </profile>
+    </profiles>
+
+
     <build>
         <plugins>
             <plugin>
@@ -324,23 +417,39 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3.1</version>
-                <configuration>
-                    <archive>
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-                        <manifestEntries>
-                            <Bundle-Version>${project.version}-t${buildNumber}</Bundle-Version>
-                            <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.3</version>
+                    <configuration>
+                        <source>1.7</source>
+                        <target>1.7</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.2</version>
+                    <executions>
+                        <execution>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>create</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <format>{0,date,yyyyMMdd-HHmmss}</format>
+                        <items>
+                            <item>timestamp</item>
+                        </items>
+                        <doCheck>false</doCheck>
+                        <doUpdate>false</doUpdate>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>jaxws-maven-plugin</artifactId>
