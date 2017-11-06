@@ -231,7 +231,11 @@ public class SaveInvoiceOperation {
         invoiceType.setNif((String) doc.getPropertyValue("S_FACTURA:provider"));
         invoiceType.setPostingDate(QuiterUtils.formatDate(Calendar.getInstance().getTime(), "yyyy-MM-dd"));
         invoiceType.setInvoiceDate(new java.text.SimpleDateFormat("yyyy-MM-dd").format(((Calendar) doc.getPropertyValue("S_FACTURA:date")).getTime()));
-        invoiceType.setOffice("");
+        if (doc.getPropertyValue("S_FACTURA:companyid").equals("50") || doc.getPropertyValue("S_FACTURA:companyid").equals("70")) {
+            invoiceType.setOffice((String) doc.getPropertyValue("S_FACTURA:companyid"));
+        } else {
+            invoiceType.setOffice("");
+        }
         invoiceType.setBrand("");
         // Add details
         DetailsType detailsType = new DetailsType();
