@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="taxes" type="{http://www.quiter.com/InvoicesIntegration}TaxesType"/>
  *         &lt;element name="paymentMethodInfo" type="{http://www.quiter.com/InvoicesIntegration}PaymentMethodType"/>
  *         &lt;element name="invoiceNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="totalAmount" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="total" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -52,7 +52,7 @@ import javax.xml.bind.annotation.XmlType;
     "taxes",
     "paymentMethodInfo",
     "invoiceNumber",
-    "totalAmount"
+    "total"
 })
 public class InvoiceType {
 
@@ -81,7 +81,7 @@ public class InvoiceType {
     @XmlElement(required = true)
     protected String invoiceNumber;
     @XmlElement(required = true)
-    protected String totalAmount;
+    protected String total;
 
     /**
      * Obtiene el valor de la propiedad invoiceID.
@@ -372,7 +372,7 @@ public class InvoiceType {
     }
 
     /**
-     * Obtiene el valor de la propiedad totalAmount.
+     * Obtiene el valor de la propiedad total.
      *
      * @return
      *     possible object is
@@ -380,16 +380,16 @@ public class InvoiceType {
      *
      */
 
-    public String getTotalAmount() { return totalAmount; }
+    public String getTotal() { return total; }
 
     /**
-     * Define el valor de la propiedad totalAmount.
+     * Define el valor de la propiedad total.
      *
      * @param value
      *     allowed object is
      *     {@link String }
      *
      */
-    public void setTotalAmount(String value) { this.totalAmount = value; }
+    public void setTotal(String value) { this.total = value; }
 
 }
