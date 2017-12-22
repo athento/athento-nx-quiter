@@ -105,53 +105,59 @@ public class SaveInvoiceOperation {
             throw new InvoiceException("Document " + doc.getId() + " is not a Invoice doctype");
         }
         MessageType output = null;
+        // Get invoice service
+        InvoicesIntegration_Service service = new InvoicesIntegration_Service(session);
+
+        InvoicesType invoicesType;
+        if (!mockup) {
+            // Generate invoiceTypes from source document
+            invoicesType = getInvoicesTypeFromDocument(doc);
+        } else {
+            invoicesType = mockInvoicesType();
+        }
+
+        if (debug) {
+            // Prepare execute invoice
+            ExecuteInvoicesIntegration invoicesIntegration = new ExecuteInvoicesIntegration();
+            invoicesIntegration.setDealerCode(dealerCode);
+            invoicesIntegration.setUser(user);
+            invoicesIntegration.setPassword(password);
+            invoicesIntegration.setInvoices(invoicesType);
+            // Show XML with document information
+            showJaxbRequest(invoicesIntegration);
+        }
+
+        // Call service
+        String result = "";
         try {
-            // Get invoice service
-            InvoicesIntegration_Service service = new InvoicesIntegration_Service(session);
-
-            InvoicesType invoicesType;
-            if (!mockup) {
-                // Generate invoiceTypes from source document
-                invoicesType = getInvoicesTypeFromDocument(doc);
-            } else {
-                invoicesType = mockInvoicesType();
-            }
-
-            if (debug) {
-                // Prepare execute invoice
-                ExecuteInvoicesIntegration invoicesIntegration = new ExecuteInvoicesIntegration();
-                invoicesIntegration.setDealerCode(dealerCode);
-                invoicesIntegration.setUser(user);
-                invoicesIntegration.setPassword(password);
-                invoicesIntegration.setInvoices(invoicesType);
-                // Show XML with document information
-                showJaxbRequest(invoicesIntegration);
-            }
-
-            // Call service
             output = service.getInvoicesIntegration().executeInvoicesIntegration(dealerCode, user, password, invoicesType);
-            String result = output.getResult();
-            if (!SUCCESS.equals(result)) {
-                LOG.error("QUITTER: Error saving Factura into Quitter: " + output.getDescription());
-            } else {
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Output Factura " + output.getDescription() + ", " + output.getDocumentID());
-                }
+            result = output.getResult();
+            String description = output.getDescription();
+            String documentID = output.getDocumentID();
+        }  catch (Exception e) {
+            result = "ERROR";
+            String description = "Problema en la comunicación con Quiter. Vuelva a intentarlo o póngase en " +
+                    "contacto con su administrador si el problema persiste";
+            String documentID = "";
+            LOG.error("Unable to integrate Factura into Quiter", e);
+            throw new QuiterException("Unable to integrate Factura: " + e.getMessage(), "500", e);
+        }
+        if (!SUCCESS.equals(result)) {
+            LOG.error("QUITTER: Error saving Factura into Quitter: " + output.getDescription());
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Output Factura " + output.getDescription() + ", " + output.getDocumentID());
             }
-            if (save) {
-                // Save result information into doc
-                doc.setPropertyValue("integration:result", output.getResult());
-                doc.setPropertyValue("integration:description", output.getDescription());
-                if (SUCCESS.equals(result)) {
-                    doc.setPropertyValue("integration:documentID", output.getDocumentID());
-                }
-                session.saveDocument(doc);
-                // Throws output
-                raiseEvent(doc, output);
+        }
+        if (save) {
+            // Save result information into doc
+            doc.setPropertyValue("integration:result", output.getResult());
+            doc.setPropertyValue("integration:description", output.getDescription());
+            if (SUCCESS.equals(result)) {
+                doc.setPropertyValue("integration:documentID", output.getDocumentID());
             }
-        } catch (Exception e) {
-            LOG.error("Unable to save Factura into Quitter", e);
-            throw new QuiterException("Unable to save Factura: " + e.getMessage(), "500", e);
+            session.saveDocument(doc);
+            // Throws output
+            raiseEvent(doc, output);
         }
         return doc;
     }
