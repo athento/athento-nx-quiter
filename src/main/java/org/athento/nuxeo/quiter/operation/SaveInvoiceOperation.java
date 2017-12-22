@@ -144,7 +144,6 @@ public class SaveInvoiceOperation {
         }
         if (!SUCCESS.equals(result)) {
             LOG.error("QUITTER: Error saving Factura into Quitter: " + output.getDescription());
-        } else {
             if (LOG.isInfoEnabled()) {
                 LOG.info("Output Factura " + output.getDescription() + ", " + output.getDocumentID());
             }
