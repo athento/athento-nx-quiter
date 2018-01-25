@@ -136,11 +136,7 @@ public class SaveInvoiceOperation {
             String documentID = output.getDocumentID();
         }  catch (Exception e) {
             result = "ERROR";
-            String description = "Problema en la comunicación con Quiter. Vuelva a intentarlo o póngase en " +
-                    "contacto con su administrador si el problema persiste";
-            String documentID = "";
             LOG.error("Unable to integrate Factura into Quiter", e);
-            throw new QuiterException("Unable to integrate Factura: " + e.getMessage(), "500", e);
         }
         if (!SUCCESS.equals(result)) {
             LOG.error("QUITTER: Error saving Factura into Quitter: " + output.getDescription());
