@@ -132,28 +132,28 @@ public class SaveInvoiceOperation {
         try {
             output = service.getInvoicesIntegration().executeInvoicesIntegration(dealerCode, user, password, invoicesType);
             result = output.getResult();
-            String description = output.getDescription();
-            String documentID = output.getDocumentID();
         }  catch (Exception e) {
             result = "ERROR";
             LOG.error("Unable to integrate Factura into Quiter", e);
         }
         if (!SUCCESS.equals(result)) {
             LOG.error("QUITTER: Error saving Factura into Quitter: " + output.getDescription());
+        }
+        if (output != null) {
             if (LOG.isInfoEnabled()) {
                 LOG.info("Output Factura " + output.getDescription() + ", " + output.getDocumentID());
             }
-        }
-        if (save) {
-            // Save result information into doc
-            doc.setPropertyValue("integration:result", output.getResult());
-            doc.setPropertyValue("integration:description", output.getDescription());
-            if (SUCCESS.equals(result)) {
-                doc.setPropertyValue("integration:documentID", output.getDocumentID());
+            if (save) {
+                // Save result information into doc
+                doc.setPropertyValue("integration:result", output.getResult());
+                doc.setPropertyValue("integration:description", output.getDescription());
+                if (SUCCESS.equals(result)) {
+                    doc.setPropertyValue("integration:documentID", output.getDocumentID());
+                }
+                session.saveDocument(doc);
+                // Throws output
+                raiseEvent(doc, output);
             }
-            session.saveDocument(doc);
-            // Throws output
-            raiseEvent(doc, output);
         }
         return doc;
     }
