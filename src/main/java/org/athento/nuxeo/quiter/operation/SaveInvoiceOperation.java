@@ -174,22 +174,26 @@ public class SaveInvoiceOperation {
         invoiceType.setInvoiceDate(QuiterUtils.formatDate(Calendar.getInstance().getTime(), "yyyy-MM-dd"));
         invoiceType.setOffice("1");
         invoiceType.setBrand("2");
+        invoiceType.setProviderID("1");
         // Add details
         DetailsType detailsType = new DetailsType();
         DetailType detailType1 = new DetailType();
         detailType1.setConcept("1");
         detailType1.setAmountWithoutVAT("2");
         detailType1.setExpenseAccount("64909100");
+        detailType1.setPersonalAccount("PA_111");
         detailsType.getDetail().add(detailType1);
         DetailType detailType2 = new DetailType();
         detailType2.setConcept("1");
         detailType2.setAmountWithoutVAT("100");
         detailType2.setExpenseAccount("64909100");
+        detailType2.setPersonalAccount("PA_222");
         detailsType.getDetail().add(detailType2);
         DetailType detailType3 = new DetailType();
         detailType3.setConcept("1");
         detailType3.setAmountWithoutVAT("200");
         detailType3.setExpenseAccount("65202900");
+        detailType3.setPersonalAccount("PA_333");
         detailsType.getDetail().add(detailType3);
         invoiceType.setDetails(detailsType);
         // Add taxes
@@ -253,6 +257,7 @@ public class SaveInvoiceOperation {
             }
             detailType.setAmountWithoutVAT(String.format("%.2f",amount).replace(",",""));
             detailType.setExpenseAccount((String) detail.get("subjectLineAccount"));
+            detailType.setPersonalAccount((String) detail.get("subjectLinePersonalAccount"));
             detailsType.getDetail().add(detailType);
         }
         invoiceType.setDetails(detailsType);
@@ -289,6 +294,8 @@ public class SaveInvoiceOperation {
         invoiceType.setPaymentMethodInfo(paymentType);
         // Add Invoice number
         invoiceType.setInvoiceNumber((String) doc.getPropertyValue("S_FACTURA:number"));
+        // Add providerID
+        invoiceType.setProviderID((String) doc.getPropertyValue("S_FACTURA:providerIdIntegration"));
         // Add Total
         Double Dtotal = (Double) doc.getPropertyValue("S_FACTURA:totalAmount");
         if (Dtotal == null) {

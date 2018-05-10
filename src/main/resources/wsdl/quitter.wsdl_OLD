@@ -1,14 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.quiter.com/InvoicesIntegration" xmlns="http://www.quiter.com/InvoicesIntegration" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="InvoicesIntegration" targetNamespace="http://www.quiter.com/InvoicesIntegration">
     <wsdl:documentation>
-        Owner: Quiter Servicios Informaticos S.L.
-        Service: InvoicesIntegration
-        Version: 1.0
-        Description: Integration of invoices of documentary manager.
+        Owner: Quiter Servicios Informaticos S.L. Service: InvoicesIntegration Version: 1.0 Description: Integration of invoices of documentary manager.
     </wsdl:documentation>
     <wsdl:types>
-        <xsd:schema targetNamespace="http://www.quiter.com/InvoicesIntegration"  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.quiter.com/InvoicesIntegration">
-            <xsd:element name="executeInvoicesIntegration" >
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.quiter.com/InvoicesIntegration" targetNamespace="http://www.quiter.com/InvoicesIntegration" elementFormDefault="qualified">
+            <xsd:element name="executeInvoicesIntegration">
                 <xsd:complexType>
                     <xsd:sequence>
                         <xsd:element name="dealerCode" type="xsd:string"/>
@@ -27,13 +23,12 @@
             </xsd:element>
             <xsd:complexType name="InvoicesType">
                 <xsd:sequence>
-                    <xsd:element name="invoice" type="InvoiceType" maxOccurs="unbounded" />
+                    <xsd:element name="invoice" type="InvoiceType" maxOccurs="unbounded"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:complexType name="InvoiceType">
                 <xsd:sequence>
                     <xsd:element name="invoiceID" type="xsd:string"/>
-                    <xsd:element name="total" type="xsd:string"/>
                     <xsd:element name="company" type="xsd:string"/>
                     <xsd:element name="department" type="xsd:string"/>
                     <xsd:element name="nif" type="xsd:string"/>
@@ -42,15 +37,15 @@
                     <xsd:element name="office" type="xsd:string"/>
                     <xsd:element name="brand" type="xsd:string"/>
                     <xsd:element name="details" type="DetailsType"/>
-                    <xsd:element name="taxes" type="TaxesType" />
+                    <xsd:element name="taxes" type="TaxesType"/>
                     <xsd:element name="paymentMethodInfo" type="PaymentMethodType"/>
                     <xsd:element name="invoiceNumber" type="xsd:string"/>
-                    <xsd:element name="providerID" type="xsd:string"/>
+                    <xsd:element name="total" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:complexType name="DetailsType">
                 <xsd:sequence>
-                    <xsd:element name="detail" type="DetailType" maxOccurs="unbounded" />
+                    <xsd:element name="detail" type="DetailType" maxOccurs="unbounded"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:complexType name="DetailType">
@@ -58,12 +53,11 @@
                     <xsd:element name="concept" type="xsd:string"/>
                     <xsd:element name="amountWithoutVAT" type="xsd:string"/>
                     <xsd:element name="expenseAccount" type="xsd:string"/>
-                    <xsd:element name="personalAccount" type="xsd:string"/>                    
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:complexType name="TaxesType">
                 <xsd:sequence>
-                    <xsd:element name="tax" type="TaxType" maxOccurs="unbounded" />
+                    <xsd:element name="tax" type="TaxType" maxOccurs="unbounded"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:complexType name="TaxType">
@@ -100,10 +94,10 @@
         </xsd:schema>
     </wsdl:types>
     <wsdl:message name="executeInvoicesIntegrationRequest">
-        <wsdl:part element="tns:executeInvoicesIntegration" name="parameters" />
+        <wsdl:part element="tns:executeInvoicesIntegration" name="parameters"/>
     </wsdl:message>
     <wsdl:message name="executeInvoicesIntegrationResponse">
-        <wsdl:part element="tns:executeInvoicesIntegrationResponse" name="return" />
+        <wsdl:part element="tns:executeInvoicesIntegrationResponse" name="return"/>
     </wsdl:message>
     <wsdl:portType name="InvoicesIntegration">
         <wsdl:documentation>Integration of invoice</wsdl:documentation>
@@ -113,20 +107,20 @@
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="InvoicesIntegrationWSSOAP" type="InvoicesIntegration">
-        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
         <wsdl:operation name="executeInvoicesIntegration">
-            <soap:operation	soapAction="executeInvoicesIntegration" />
+            <soap:operation soapAction="executeInvoicesIntegration"/>
             <wsdl:input name="executeInvoicesIntegrationRequest">
-                <soap:body use="literal" />
+                <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output name="executeInvoicesIntegrationResponse">
-                <soap:body use="literal" />
+                <soap:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
     </wsdl:binding>
     <wsdl:service name="InvoicesIntegration">
         <wsdl:port binding="InvoicesIntegrationWSSOAP" name="InvoicesIntegration">
-            <soap:address location="http://localhost:6080/InvoicesIntegration"/>
+            <soap:address location="http://10.210.76.2:6080/QLServices/IntegradorFacturasRenault/InvoicesIntegration.pws"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

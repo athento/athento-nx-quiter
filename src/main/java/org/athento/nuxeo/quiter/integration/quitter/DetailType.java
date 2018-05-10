@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="concept" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="amountWithoutVAT" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="expenseAccount" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="personalAccount" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,7 +33,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "DetailType", propOrder = {
     "concept",
     "amountWithoutVAT",
-    "expenseAccount"
+    "expenseAccount",
+    "personalAccount"
 })
 public class DetailType {
 
@@ -42,6 +44,8 @@ public class DetailType {
     protected String amountWithoutVAT;
     @XmlElement(required = true)
     protected String expenseAccount;
+    @XmlElement(required = true)
+    protected String personalAccount;
 
     /**
      * Obtiene el valor de la propiedad concept.
@@ -115,4 +119,27 @@ public class DetailType {
         this.expenseAccount = value;
     }
 
+    /**
+     * Obtiene el valor de la propiedad personalAccount.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public String getPersonalAccount() {
+        return personalAccount;
+    }
+
+    /**
+     * Define el valor de la propiedad expenseAccount.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setPersonalAccount(String value) {
+        this.personalAccount = value;
+    }
 }
