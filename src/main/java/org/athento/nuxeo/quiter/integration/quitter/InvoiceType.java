@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="paymentMethodInfo" type="{http://www.quiter.com/InvoicesIntegration}PaymentMethodType"/>
  *         &lt;element name="invoiceNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="total" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="providerID" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -52,7 +53,8 @@ import javax.xml.bind.annotation.XmlType;
     "taxes",
     "paymentMethodInfo",
     "invoiceNumber",
-    "total"
+    "total",
+    "providerID"
 })
 public class InvoiceType {
 
@@ -82,6 +84,8 @@ public class InvoiceType {
     protected String invoiceNumber;
     @XmlElement(required = true)
     protected String total;
+    @XmlElement(required = true)
+    protected String providerID;
 
     /**
      * Obtiene el valor de la propiedad invoiceID.
@@ -392,4 +396,27 @@ public class InvoiceType {
      */
     public void setTotal(String value) { this.total = value; }
 
+    /**
+     * Obtiene el valor de la propiedad providerID.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public String getProviderID() {
+        return providerID;
+    }
+
+    /**
+     * Define el valor de la propiedad providerID.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setProviderID(String value) {
+        this.providerID = value;
+    }
 }
