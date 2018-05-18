@@ -126,7 +126,7 @@
     </wsdl:binding>
     <wsdl:service name="InvoicesIntegration">
         <wsdl:port binding="InvoicesIntegrationWSSOAP" name="InvoicesIntegration">
-            <soap:address location="http://localhost:6080/InvoicesIntegration"/>
+            <soap:address location="http://demojlr.quiter.com:6080/QLServices/IntegradorFacturasRenault/InvoicesIntegration.pws"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
