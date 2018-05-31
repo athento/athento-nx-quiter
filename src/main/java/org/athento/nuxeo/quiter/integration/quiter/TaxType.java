@@ -1,5 +1,5 @@
 
-package org.athento.nuxeo.quiter.integration.quitter;
+package org.athento.nuxeo.quiter.integration.quiter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

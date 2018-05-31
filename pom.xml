@@ -469,7 +469,7 @@
                         <bindingFiles>
                             <bindingFile>binding.xml</bindingFile>
                         </bindingFiles>
-                        <packageName>org.athento.renault.integration.quitter</packageName>
+                        <packageName>org.athento.nuxeo.quiter.integration.quiter</packageName>
                         <wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
                         <sourceDestDir>${project.build.directory}/generated-sources/wsimport</sourceDestDir>
                     </configuration>

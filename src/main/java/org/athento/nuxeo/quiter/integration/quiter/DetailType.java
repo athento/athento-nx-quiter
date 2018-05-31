@@ -1,5 +1,5 @@
 
-package org.athento.nuxeo.quiter.integration.quitter;
+package org.athento.nuxeo.quiter.integration.quiter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -121,25 +121,26 @@ public class DetailType {
 
     /**
      * Obtiene el valor de la propiedad personalAccount.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getPersonalAccount() {
         return personalAccount;
     }
 
     /**
-     * Define el valor de la propiedad expenseAccount.
-     *
+     * Define el valor de la propiedad personalAccount.
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setPersonalAccount(String value) {
         this.personalAccount = value;
     }
+
 }

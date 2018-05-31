@@ -4,8 +4,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.athento.nuxeo.quiter.api.exception.InvoiceException;
 import org.athento.nuxeo.quiter.api.exception.QuiterException;
-import org.athento.nuxeo.quiter.integration.quitter.*;
 import org.athento.nuxeo.quiter.api.util.QuiterUtils;
+import org.athento.nuxeo.quiter.integration.quiter.*;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
@@ -26,7 +26,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -318,7 +317,7 @@ public class SaveInvoiceOperation {
             Document document = DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder().newDocument();
             JAXBContext jc = JAXBContext
-                    .newInstance("org.athento.nuxeo.quiter.integration.quitter");
+                    .newInstance("org.athento.nuxeo.quiter.integration.quiter");
             Marshaller marshaller = jc.createMarshaller();
             marshaller.marshal(invoicesIntegration, document);
 
