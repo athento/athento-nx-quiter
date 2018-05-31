@@ -255,7 +255,7 @@ public class SaveInvoiceOperation {
             if (amount == null) {
                 amount=0.0;
             }
-            detailType.setAmountWithoutVAT(String.format("%.2f",amount).replace(",",""));
+            detailType.setAmountWithoutVAT(String.format("%.2f",amount).replace(",","").replace(".",""));
             detailType.setExpenseAccount((String) detail.get("subjectLineAccount"));
             detailType.setPersonalAccount((String) detail.get("subjectLinePersonalAccount"));
             detailsType.getDetail().add(detailType);
@@ -271,13 +271,13 @@ public class SaveInvoiceOperation {
             if (base == null) {
                 base=0.0;
             }
-            taxType.setTaxBase(String.format("%.2f",base).replace(",",""));
+            taxType.setTaxBase(String.format("%.2f",base).replace(",","").replace(".",""));
             taxType.setPercentage((String) tax.get("percentage"));
             Double total = (Double) tax.get("totalInvoice");
             if (total == null) {
                 total=0.0;
             }
-            taxType.setTotalInvoice(String.format("%.2f",total).replace(",",""));
+            taxType.setTotalInvoice(String.format("%.2f",total).replace(",","").replace(".",""));
             taxesType.getTax().add(taxType);
         }
         invoiceType.setTaxes(taxesType);
@@ -301,7 +301,7 @@ public class SaveInvoiceOperation {
         if (Dtotal == null) {
             Dtotal=0.0;
         }
-        invoiceType.setTotal(String.format("%.2f",Dtotal).replace(",",""));
+        invoiceType.setTotal(String.format("%.2f",Dtotal).replace(",","").replace(".",""));
         // Add Invoice Type
         invoicesType.getInvoice().add(invoiceType);
         return invoicesType;
