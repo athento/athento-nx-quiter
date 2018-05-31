@@ -35,17 +35,17 @@ public interface InvoicesIntegration {
      *     returns org.athento.nuxeo.quiter.integration.quiter.MessageType
      */
     @WebMethod(action = "executeInvoicesIntegration")
-    @WebResult(name = "message", targetNamespace = "")
+    @WebResult(name = "message", targetNamespace = "http://www.quiter.com/InvoicesIntegration")
     @RequestWrapper(localName = "executeInvoicesIntegration", targetNamespace = "http://www.quiter.com/InvoicesIntegration", className = "org.athento.nuxeo.quiter.integration.quiter.ExecuteInvoicesIntegration")
     @ResponseWrapper(localName = "executeInvoicesIntegrationResponse", targetNamespace = "http://www.quiter.com/InvoicesIntegration", className = "org.athento.nuxeo.quiter.integration.quiter.ExecuteInvoicesIntegrationResponse")
     public MessageType executeInvoicesIntegration(
-        @WebParam(name = "dealerCode", targetNamespace = "")
+        @WebParam(name = "dealerCode", targetNamespace = "http://www.quiter.com/InvoicesIntegration")
         String dealerCode,
-        @WebParam(name = "user", targetNamespace = "")
+        @WebParam(name = "user", targetNamespace = "http://www.quiter.com/InvoicesIntegration")
         String user,
-        @WebParam(name = "password", targetNamespace = "")
+        @WebParam(name = "password", targetNamespace = "http://www.quiter.com/InvoicesIntegration")
         String password,
-        @WebParam(name = "invoices", targetNamespace = "")
+        @WebParam(name = "invoices", targetNamespace = "http://www.quiter.com/InvoicesIntegration")
         InvoicesType invoices);
 
 }

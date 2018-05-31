@@ -18,7 +18,6 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="invoiceID" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="total" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="company" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="department" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="nif" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -30,6 +29,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="taxes" type="{http://www.quiter.com/InvoicesIntegration}TaxesType"/>
  *         &lt;element name="paymentMethodInfo" type="{http://www.quiter.com/InvoicesIntegration}PaymentMethodType"/>
  *         &lt;element name="invoiceNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="total" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="providerID" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -42,7 +42,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "InvoiceType", propOrder = {
     "invoiceID",
-    "total",
     "company",
     "department",
     "nif",
@@ -54,14 +53,13 @@ import javax.xml.bind.annotation.XmlType;
     "taxes",
     "paymentMethodInfo",
     "invoiceNumber",
+    "total",
     "providerID"
 })
 public class InvoiceType {
 
     @XmlElement(required = true)
     protected String invoiceID;
-    @XmlElement(required = true)
-    protected String total;
     @XmlElement(required = true)
     protected String company;
     @XmlElement(required = true)
@@ -84,6 +82,8 @@ public class InvoiceType {
     protected PaymentMethodType paymentMethodInfo;
     @XmlElement(required = true)
     protected String invoiceNumber;
+    @XmlElement(required = true)
+    protected String total;
     @XmlElement(required = true)
     protected String providerID;
 
@@ -109,30 +109,6 @@ public class InvoiceType {
      */
     public void setInvoiceID(String value) {
         this.invoiceID = value;
-    }
-
-    /**
-     * Obtiene el valor de la propiedad total.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getTotal() {
-        return total;
-    }
-
-    /**
-     * Define el valor de la propiedad total.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setTotal(String value) {
-        this.total = value;
     }
 
     /**
@@ -397,6 +373,30 @@ public class InvoiceType {
      */
     public void setInvoiceNumber(String value) {
         this.invoiceNumber = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad total.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getTotal() {
+        return total;
+    }
+
+    /**
+     * Define el valor de la propiedad total.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTotal(String value) {
+        this.total = value;
     }
 
     /**

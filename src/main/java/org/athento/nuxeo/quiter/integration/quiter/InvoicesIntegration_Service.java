@@ -1,4 +1,3 @@
-
 package org.athento.nuxeo.quiter.integration.quiter;
 
 import org.athento.nuxeo.quiter.api.util.QuiterUtils;
