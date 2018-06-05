@@ -25,6 +25,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +79,10 @@ public class SaveInvoiceOperation {
     @Param(name = "mockup", required = false)
     boolean mockup = false;
 
+    /** Not send. */
+    @Param(name = "ignoreSend", required = false)
+    boolean ignoreSend = false;
+
     /**
      * Context.
      */
@@ -126,32 +132,34 @@ public class SaveInvoiceOperation {
             showJaxbRequest(invoicesIntegration);
         }
 
-        // Call service
-        String result = "";
-        try {
-            output = service.getInvoicesIntegration().executeInvoicesIntegration(dealerCode, user, password, invoicesType);
-            result = output.getResult();
-        }  catch (Exception e) {
-            result = "ERROR";
-            LOG.error("Unable to integrate Factura into Quiter", e);
-        }
-        if (!SUCCESS.equals(result)) {
-            LOG.error("QUITTER: Error saving Factura into Quitter: " + output.getDescription());
-        }
-        if (output != null) {
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Output Factura " + output.getDescription() + ", " + output.getDocumentID());
+        if (!ignoreSend) {
+            // Call service
+            String result = "";
+            try {
+                output = service.getInvoicesIntegration().executeInvoicesIntegration(dealerCode, user, password, invoicesType);
+                result = output.getResult();
+            } catch (Exception e) {
+                result = "ERROR";
+                LOG.error("Unable to integrate Factura into Quiter", e);
             }
-            if (save) {
-                // Save result information into doc
-                doc.setPropertyValue("integration:result", output.getResult());
-                doc.setPropertyValue("integration:description", output.getDescription());
-                if (SUCCESS.equals(result)) {
-                    doc.setPropertyValue("integration:documentID", output.getDocumentID());
+            if (!SUCCESS.equals(result)) {
+                LOG.error("QUITTER: Error saving Factura into Quitter: " + output.getDescription());
+            }
+            if (output != null) {
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Output Factura " + output.getDescription() + ", " + output.getDocumentID());
                 }
-                session.saveDocument(doc);
-                // Throws output
-                raiseEvent(doc, output);
+                if (save) {
+                    // Save result information into doc
+                    doc.setPropertyValue("integration:result", output.getResult());
+                    doc.setPropertyValue("integration:description", output.getDescription());
+                    if (SUCCESS.equals(result)) {
+                        doc.setPropertyValue("integration:documentID", output.getDocumentID());
+                    }
+                    session.saveDocument(doc);
+                    // Throws output
+                    raiseEvent(doc, output);
+                }
             }
         }
         return doc;
@@ -254,12 +262,14 @@ public class SaveInvoiceOperation {
             if (amount == null) {
                 amount=0.0;
             }
+            amount = round(amount, 2);
             detailType.setAmountWithoutVAT(String.format("%.2f",amount).replace(",","").replace(".",""));
             detailType.setExpenseAccount((String) detail.get("subjectLineAccount"));
             detailType.setPersonalAccount((String) detail.get("subjectLinePersonalAccount"));
             detailsType.getDetail().add(detailType);
         }
         invoiceType.setDetails(detailsType);
+        Double Dtotal = 0.0;
         // Add taxes
         TaxesType taxesType = new TaxesType();
         List<Map<String, Object>> taxes = (List) doc.getPropertyValue("S_FACTURA:taxesLine");
@@ -276,6 +286,8 @@ public class SaveInvoiceOperation {
             if (total == null) {
                 total=0.0;
             }
+            total = round(total, 2);
+            Dtotal += total;
             taxType.setTotalInvoice(String.format("%.2f",total).replace(",","").replace(".",""));
             taxesType.getTax().add(taxType);
         }
@@ -296,7 +308,7 @@ public class SaveInvoiceOperation {
         // Add providerID
         invoiceType.setProviderID((String) doc.getPropertyValue("S_FACTURA:providerIdIntegration"));
         // Add Total
-        Double Dtotal = (Double) doc.getPropertyValue("S_FACTURA:totalAmount");
+        // IGNORE because it has problems with round: Double Dtotal = (Double) doc.getPropertyValue("S_FACTURA:totalAmount");
         if (Dtotal == null) {
             Dtotal=0.0;
         }
@@ -351,5 +363,11 @@ public class SaveInvoiceOperation {
         producer.fireEvent(event);
     }
 
-
+    /** Round. */
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 }
