@@ -270,6 +270,12 @@ public class SaveInvoiceOperation {
         }
         invoiceType.setDetails(detailsType);
         Double Dtotal = 0.0;
+        Double taxableIncome = (Double) doc.getPropertyValue("S_FACTURA:taxableIncome");
+        if (taxableIncome == null) {
+            taxableIncome=0.0;
+        }
+        taxableIncome = round(taxableIncome, 2);
+        Dtotal += taxableIncome;
         // Add taxes
         TaxesType taxesType = new TaxesType();
         List<Map<String, Object>> taxes = (List) doc.getPropertyValue("S_FACTURA:taxesLine");
