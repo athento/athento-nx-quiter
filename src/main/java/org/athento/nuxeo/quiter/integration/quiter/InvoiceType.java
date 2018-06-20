@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="invoiceNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="total" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="providerID" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="sucursal" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -54,7 +55,8 @@ import javax.xml.bind.annotation.XmlType;
     "paymentMethodInfo",
     "invoiceNumber",
     "total",
-    "providerID"
+    "providerID",
+    "sucursal"
 })
 public class InvoiceType {
 
@@ -86,6 +88,8 @@ public class InvoiceType {
     protected String total;
     @XmlElement(required = true)
     protected String providerID;
+    @XmlElement(required = true)
+    protected String sucursal;
 
     /**
      * Obtiene el valor de la propiedad invoiceID.
@@ -421,6 +425,30 @@ public class InvoiceType {
      */
     public void setProviderID(String value) {
         this.providerID = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad sucursal.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    /**
+     * Define el valor de la propiedad sucursal.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setSucursal(String value) {
+        this.sucursal = value;
     }
 
 }

@@ -182,6 +182,7 @@ public class SaveInvoiceOperation {
         invoiceType.setOffice("1");
         invoiceType.setBrand("2");
         invoiceType.setProviderID("1");
+        invoiceType.setSucursal("00");
         // Add details
         DetailsType detailsType = new DetailsType();
         DetailType detailType1 = new DetailType();
@@ -313,6 +314,8 @@ public class SaveInvoiceOperation {
         invoiceType.setInvoiceNumber((String) doc.getPropertyValue("S_FACTURA:number"));
         // Add providerID
         invoiceType.setProviderID((String) doc.getPropertyValue("S_FACTURA:providerIdIntegration"));
+        // Add sucursal
+        invoiceType.setSucursal((String) doc.getPropertyValue("S_FACTURA:sucursal"));
         // Add Total
         // IGNORE because it has problems with round: Double Dtotal = (Double) doc.getPropertyValue("S_FACTURA:totalAmount");
         if (Dtotal == null) {

@@ -42,6 +42,7 @@
                     <xsd:element name="invoiceNumber" type="xsd:string"/>
                     <xsd:element name="total" type="xsd:string"/>
                     <xsd:element name="providerID" type="xsd:string"/>
+                    <xsd:element name="sucursal" type="xsd:string"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:complexType name="DetailsType">
