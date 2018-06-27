@@ -315,7 +315,11 @@ public class SaveInvoiceOperation {
         // Add providerID
         invoiceType.setProviderID((String) doc.getPropertyValue("S_FACTURA:providerIdIntegration"));
         // Add sucursal
-        invoiceType.setSucursal((String) doc.getPropertyValue("S_FACTURA:sucursal"));
+        String sucursal = (String) doc.getPropertyValue("S_FACTURA:sucursal");
+        if (sucursal == null) {
+            sucursal="01";
+        }
+        invoiceType.setSucursal(sucursal);
         // Add Total
         // IGNORE because it has problems with round: Double Dtotal = (Double) doc.getPropertyValue("S_FACTURA:totalAmount");
         if (Dtotal == null) {
@@ -339,6 +343,7 @@ public class SaveInvoiceOperation {
                     .newDocumentBuilder().newDocument();
             JAXBContext jc = JAXBContext
                     .newInstance("org.athento.nuxeo.quiter.integration.quiter");
+
             Marshaller marshaller = jc.createMarshaller();
             marshaller.marshal(invoicesIntegration, document);
 
