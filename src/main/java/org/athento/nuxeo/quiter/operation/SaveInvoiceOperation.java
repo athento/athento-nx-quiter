@@ -241,6 +241,7 @@ public class SaveInvoiceOperation {
         InvoiceType invoiceType = new InvoiceType();
         invoiceType.setInvoiceID(doc.getId());
         invoiceType.setCompany((String) doc.getPropertyValue("S_FACTURA:companyid"));
+        String company = (String) doc.getPropertyValue("S_FACTURA:companyid");
         invoiceType.setDepartment((String) doc.getPropertyValue("S_FACTURA:department"));
         invoiceType.setNif((String) doc.getPropertyValue("S_FACTURA:provider"));
         invoiceType.setPostingDate(QuiterUtils.formatDate(Calendar.getInstance().getTime(), "yyyy-MM-dd"));
@@ -317,7 +318,13 @@ public class SaveInvoiceOperation {
         // Add sucursal
         String sucursal = (String) doc.getPropertyValue("S_FACTURA:sucursal");
         if (sucursal == null) {
-            sucursal="01";
+            sucursal="00";
+            if ("50".equals(company)) {
+                sucursal="50";
+            }
+            if ("70".equals(company)) {
+                sucursal="70";
+            }
         }
         invoiceType.setSucursal(sucursal);
         // Add Total
