@@ -27,6 +27,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -407,8 +408,9 @@ public class SaveInvoiceOperation {
     /** Round. */
     private static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        BigDecimal bd = new BigDecimal(String.valueOf(value));
+        bd = bd.setScale(places, BigDecimal.ROUND_HALF_UP);
         return bd.doubleValue();
     }
+
 }
