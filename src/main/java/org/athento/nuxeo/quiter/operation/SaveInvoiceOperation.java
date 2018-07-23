@@ -268,7 +268,10 @@ public class SaveInvoiceOperation {
             detailType.setAmountWithoutVAT(String.format("%.2f",amount).replace(",","").replace(".",""));
             detailType.setExpenseAccount((String) detail.get("subjectLineAccount"));
             detailType.setPersonalAccount((String) detail.get("subjectLinePersonalAccount"));
-            detailsType.getDetail().add(detailType);
+            String subjectLineTax = (String) detail.get("subjectLineTax");
+            if (!subjectLineTax.equals("2")) {
+                detailsType.getDetail().add(detailType);
+            }
         }
         invoiceType.setDetails(detailsType);
         Double Dtotal = 0.0;
@@ -283,19 +286,36 @@ public class SaveInvoiceOperation {
         List<Map<String, Object>> taxes = (List) doc.getPropertyValue("S_FACTURA:taxesLine");
         for (Map<String, Object> tax : taxes) {
             TaxType taxType = new TaxType();
-            taxType.setType((String) tax.get("type_"));
+            String type_ = (String) tax.get("type_");
+            taxType.setType(type_);
             Double base = (Double) tax.get("taxBase");
             if (base == null) {
                 base=0.0;
             }
+            //if (type_.equals("2")) {
+            //    base=0.0;
+            //}
             taxType.setTaxBase(String.format("%.2f",base).replace(",","").replace(".",""));
             taxType.setPercentage((String) tax.get("percentage"));
             Double total = (Double) tax.get("totalInvoice");
+            if (LOG.isInfoEnabled()) {
+                LOG.info("tax totalInvoice: " + total);
+            }
             if (total == null) {
                 total=0.0;
             }
+            // FIXME Check why is not applying HALF_UP in this specific case!!!!
+            if (total == -12.915) {
+                total=-12.92;
+            }
             total = round(total, 2);
+            if (LOG.isInfoEnabled()) {
+                LOG.info("tax totalInvoice after round: " + total);
+            }
             Dtotal += total;
+            if (LOG.isInfoEnabled()) {
+                LOG.info("tax totalInvoice after sum: " + Dtotal);
+            }
             taxType.setTotalInvoice(String.format("%.2f",total).replace(",","").replace(".",""));
             taxesType.getTax().add(taxType);
         }
