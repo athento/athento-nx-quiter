@@ -288,11 +288,16 @@ public class SaveInvoiceOperation {
         for (Map<String, Object> tax : taxes) {
             TaxType taxType = new TaxType();
             String type_ = (String) tax.get("type_");
+            String taxPercent = (String) tax.get("percentage");
+            Double taxPercentValue = Double.valueOf(taxPercent);
             taxType.setType(type_);
             Double base = (Double) tax.get("taxBase");
             if (base == null) {
                 base=0.0;
             }
+            // Calculate total based on base
+            LOG.info("Base Tax " + base + ", " + (base * taxPercentValue / 100));
+            Double totalFromBase = round(base * taxPercentValue / 100, 2);
             //if (type_.equals("2")) {
             //    base=0.0;
             //}
@@ -306,10 +311,14 @@ public class SaveInvoiceOperation {
                 total=0.0;
             }
             // FIXME Check why is not applying HALF_UP in this specific case!!!!
-            if (total == -12.915) {
-                total=-12.92;
-            }
+            //if (total == -12.915) {
+            //    total=-12.92;
+            //}
             total = round(total, 2);
+            if (totalFromBase != total) {
+                LOG.warn("Total from base " + totalFromBase +  " is not same value of total " + total);
+                total = totalFromBase;
+            }
             if (LOG.isInfoEnabled()) {
                 LOG.info("tax totalInvoice after round: " + total);
             }
@@ -384,7 +393,6 @@ public class SaveInvoiceOperation {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Raise event with output information.
